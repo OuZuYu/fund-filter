@@ -1,0 +1,23 @@
+{
+  "name": "fund-filter",
+  "version": "1.0.0",
+  "description": "nodejs爬取基金，并筛选出业绩好的。",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ouJoy/fund-filter.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ouJoy/fund-filter/issues"
+  },
+  "homepage": "https://github.com/ouJoy/fund-filter#readme",
+  "dependencies": {
+    "eventproxy": "^1.0.0",
+    "superagent": "^3.8.3"
+  }
+}
