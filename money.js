@@ -13,6 +13,7 @@ let url = {
     month3: [],
     month1: [],
 }
+
 // 存爬虫结果
 let result = {
     year3: [],
@@ -23,14 +24,22 @@ let result = {
     month1: [],
 }
 
-// 前i页 url
-for (let i = 1; i < 3; i++) {
-    url.year3.push(`http://fund.eastmoney.com/data/rankhandler.aspx?op=ph&dt=kf&ft=gp&rs=&gs=0&sc=3nzf&st=desc&sd=2017-07-19&ed=2018-07-19&qdii=&tabSubtype=,,,,,&pi=${i}&pn=50&dx=1&v=0.5642004526099762`);
-    url.year2.push(`http://fund.eastmoney.com/data/rankhandler.aspx?op=ph&dt=kf&ft=gp&rs=&gs=0&sc=2nzf&st=desc&sd=2017-07-19&ed=2018-07-19&qdii=&tabSubtype=,,,,,&pi=${i}&pn=50&dx=1&v=0.4745658355052569`);
-    url.year1.push(`http://fund.eastmoney.com/data/rankhandler.aspx?op=ph&dt=kf&ft=gp&rs=&gs=0&sc=1nzf&st=desc&sd=2017-07-19&ed=2018-07-19&qdii=&tabSubtype=,,,,,&pi=${i}&pn=50&dx=1&v=0.3283191257386804`);
-    url.month6.push(`http://fund.eastmoney.com/data/rankhandler.aspx?op=ph&dt=kf&ft=gp&rs=&gs=0&sc=6yzf&st=desc&sd=2017-07-19&ed=2018-07-19&qdii=&tabSubtype=,,,,,&pi=${i}&pn=50&dx=1&v=0.01517020554413473`)
-    url.month3.push(`http://fund.eastmoney.com/data/rankhandler.aspx?op=ph&dt=kf&ft=gp&rs=&gs=0&sc=3yzf&st=desc&sd=2017-07-19&ed=2018-07-19&qdii=&tabSubtype=,,,,,&pi=${i}&pn=50&dx=1&v=0.8321976563018312`)
-    url.month1.push(`http://fund.eastmoney.com/data/rankhandler.aspx?op=ph&dt=kf&ft=gp&rs=&gs=0&sc=1yzf&st=desc&sd=2017-07-19&ed=2018-07-19&qdii=&tabSubtype=,,,,,&pi=${i}&pn=50&dx=1&v=0.5825533630457385`)
+const PAGE = 2; // 这里填 每类排名（3年，2年）分别获取多少页数据。
+const GET_NUM = 6 * 2; // 这里填请求次数，比如3年和2年这两类排名分别获取前两页 就是 2 * 2
+const FILTER_NUM = 6; // 这里填 某基金出现的次数，比如筛选3年和2年这两类排名，那么应该出现两次。
+
+/*
+    筛选的逻辑是：若某基金位于各类排名的前某页，那这就是好基金，比如我要筛选3年、2年、1年都排在前两页的基金，那么在下面循环里填好3年2年1年的地址。PAGE填入2，GET_NUM填入3 * 2，FILTER_NUM填入3。运行：node index ，然后打开localhost:8888那么就能显示出筛选好的在3年、2年、1年都位于前2页的基金，每页是50条，其实就是选出
+    3年2年1年都排在前100名。
+*/
+
+for (let i = 1; i <= PAGE; i++) {
+    url.year3.push(`http://fund.eastmoney.com/data/rankhandler.aspx?op=ph&dt=kf&ft=gp&rs=&gs=0&sc=3nzf&st=desc&sd=2018-03-08&ed=2019-03-08&qdii=&tabSubtype=,,,,,&pi=${i}&pn=50&dx=1&v=0.41402326100951403`);
+    url.year2.push(`http://fund.eastmoney.com/data/rankhandler.aspx?op=ph&dt=kf&ft=gp&rs=&gs=0&sc=2nzf&st=desc&sd=2018-03-08&ed=2019-03-08&qdii=&tabSubtype=,,,,,&pi=${i}&pn=50&dx=1&v=0.023540940880398153`);
+    url.year1.push(`http://fund.eastmoney.com/data/rankhandler.aspx?op=ph&dt=kf&ft=gp&rs=&gs=0&sc=1nzf&st=desc&sd=2018-03-08&ed=2019-03-08&qdii=&tabSubtype=,,,,,&pi=${i}&pn=50&dx=1&v=0.906729457092101`);
+    url.month6.push(`http://fund.eastmoney.com/data/rankhandler.aspx?op=ph&dt=kf&ft=gp&rs=&gs=0&sc=6yzf&st=desc&sd=2018-03-08&ed=2019-03-08&qdii=&tabSubtype=,,,,,&pi=${i}&pn=50&dx=1&v=0.039779173319292704`)
+    url.month3.push(`http://fund.eastmoney.com/data/rankhandler.aspx?op=ph&dt=kf&ft=gp&rs=&gs=0&sc=3yzf&st=desc&sd=2018-03-08&ed=2019-03-08&qdii=&tabSubtype=,,,,,&pi=${i}&pn=50&dx=1&v=0.8709048966771133`)
+    url.month1.push(`http://fund.eastmoney.com/data/rankhandler.aspx?op=ph&dt=kf&ft=gp&rs=&gs=0&sc=1yzf&st=desc&sd=2018-03-08&ed=2019-03-08&qdii=&tabSubtype=,,,,,&pi=${i}&pn=50&dx=1&v=0.8329699048199899`)
 }
 
 function start () {
@@ -43,9 +52,26 @@ function start () {
         result.month3 = [];
         result.month1 = [];
         res.writeHead(200, { 'Content-Type': 'text/html;charset=utf-8' });
+
         // 异步请求完成后显示筛选结果
-        ep.after('fund', 2 * 6, function (fundArr) {
+        // 这里GET_NUM为请求次数，比如3年 2年 1年 6月 3月 1月 每个要获取 4 页 就是 6 * 4；
+
+        ep.after('fund', GET_NUM, function (fundArr) {
+            res.write('<h1>3年</h1>')
+            res.write(JSON.stringify(result.year3));
+            res.write('<h1>2年</h1>')
+            res.write(JSON.stringify(result.year2));
+            res.write('<h1>1年</h1>')
+            res.write(JSON.stringify(result.year1));
+            res.write('<h1>6月</h1>')
+            res.write(JSON.stringify(result.month6));
+            res.write('<h1>3月</h1>')
+            res.write(JSON.stringify(result.month3));
+            res.write('<h1>1月</h1>')
+            res.write(JSON.stringify(result.month1));
             res.write('<h1>汇总</h1>')
+
+            // 合并汇总数据
             let allFund = [];
             for (let i of Object.keys(result)) {
                 console.log(i,result[i].length)
@@ -54,10 +80,11 @@ function start () {
             console.log(allFund.length)
             res.write(JSON.stringify(allFund));
 
+            // 筛选好的数据。
             let goodFund = [];
             for (let fund of allFund) {
                 let item = allFund.filter(val => val === fund);
-                if (item.length >= 6) goodFund.push(fund);
+                if (item.length >= FILTER_NUM) goodFund.push(fund);
             }
 
             let money = Array.from(new Set(goodFund))
@@ -101,7 +128,7 @@ function start () {
             })
         })
     };
-    http.createServer(onRequest).listen(3333);
+    http.createServer(onRequest).listen(8888);
 }
 
 // 获取基金名称
