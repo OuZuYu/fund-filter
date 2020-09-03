@@ -51,7 +51,8 @@ for (let i = 1; i <= PAGE; i++) {
     // url.month1.push(`http://fund.eastmoney.com/data/rankhandler.aspx?op=ph&dt=kf&ft=gp&rs=&gs=0&sc=1yzf&st=desc&sd=2018-03-08&ed=2019-03-08&qdii=&tabSubtype=,,,,,&pi=${i}&pn=50&dx=1&v=0.8329699048199899`)
 }
 
-function start () {
+function start() {
+    console.log('请打开 localhost:8888 查看筛选结果')
     let onRequest = (req, res) => {
         // 重置，避免重复合并
         result.year3 = [];
