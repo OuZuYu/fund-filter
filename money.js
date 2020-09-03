@@ -24,9 +24,10 @@ let result = {
     month1: [],
 }
 
+
 const PAGE = 2; // 这里填 每类排名（3年，2年）分别获取多少页数据。
-const GET_NUM = 6 * 2; // 这里填请求次数，比如3年和2年这两类排名分别获取前两页 就是 2 * 2
-const FILTER_NUM = 6; // 这里填 某基金出现的次数，比如筛选3年和2年这两类排名，那么应该出现两次。
+const GET_NUM = 5 * 2; // 这里填请求次数，比如3年和2年这两类排名分别获取前两页 就是 2 * 2
+const FILTER_NUM = 5; // 这里填 某基金出现的次数，比如筛选3年和2年这两类排名，那么应该出现两次。
 
 /*
     筛选的逻辑是：若某基金位于各类排名的前某页，那这就是好基金，比如我要筛选3年、2年、1年都排在前两页的基金，那么在下面循环里填好3年2年1年的地址。PAGE填入2，GET_NUM填入3 * 2，FILTER_NUM填入3。运行：node index ，然后打开localhost:8888那么就能显示出筛选好的在3年、2年、1年都位于前2页的基金，每页是50条，其实就是选出
@@ -34,12 +35,20 @@ const FILTER_NUM = 6; // 这里填 某基金出现的次数，比如筛选3年�
 */
 
 for (let i = 1; i <= PAGE; i++) {
-    url.year3.push(`http://fund.eastmoney.com/data/rankhandler.aspx?op=ph&dt=kf&ft=gp&rs=&gs=0&sc=3nzf&st=desc&sd=2018-03-08&ed=2019-03-08&qdii=&tabSubtype=,,,,,&pi=${i}&pn=50&dx=1&v=0.41402326100951403`);
-    url.year2.push(`http://fund.eastmoney.com/data/rankhandler.aspx?op=ph&dt=kf&ft=gp&rs=&gs=0&sc=2nzf&st=desc&sd=2018-03-08&ed=2019-03-08&qdii=&tabSubtype=,,,,,&pi=${i}&pn=50&dx=1&v=0.023540940880398153`);
-    url.year1.push(`http://fund.eastmoney.com/data/rankhandler.aspx?op=ph&dt=kf&ft=gp&rs=&gs=0&sc=1nzf&st=desc&sd=2018-03-08&ed=2019-03-08&qdii=&tabSubtype=,,,,,&pi=${i}&pn=50&dx=1&v=0.906729457092101`);
-    url.month6.push(`http://fund.eastmoney.com/data/rankhandler.aspx?op=ph&dt=kf&ft=gp&rs=&gs=0&sc=6yzf&st=desc&sd=2018-03-08&ed=2019-03-08&qdii=&tabSubtype=,,,,,&pi=${i}&pn=50&dx=1&v=0.039779173319292704`)
+    url.year3.push(`http://fund.eastmoney.com/data/rankhandler.aspx?op=ph&dt=kf&ft=gp&rs=&gs=0&sc=3nzf&st=desc&sd=2019-09-03&ed=2020-09-03&qdii=&tabSubtype=,,,,,&pi=${i}&pn=50&dx=1&v=0.8635594364362218`);
+    url.year2.push(`http://fund.eastmoney.com/data/rankhandler.aspx?op=ph&dt=kf&ft=gp&rs=&gs=0&sc=2nzf&st=desc&sd=2019-09-03&ed=2020-09-03&qdii=&tabSubtype=,,,,,&pi=${i}&pn=50&dx=1&v=0.6672559290347202`);
+    url.year1.push(`http://fund.eastmoney.com/data/rankhandler.aspx?op=ph&dt=kf&ft=gp&rs=&gs=0&sc=1nzf&st=desc&sd=2019-09-03&ed=2020-09-03&qdii=&tabSubtype=,,,,,&pi=${i}&pn=50&dx=1&v=0.39173997358439294`);
+    url.month6.push(`http://fund.eastmoney.com/data/rankhandler.aspx?op=ph&dt=kf&ft=gp&rs=&gs=0&sc=6yzf&st=desc&sd=2019-09-03&ed=2020-09-03&qdii=&tabSubtype=,,,,,&pi=${i}&pn=50&dx=1&v=0.5677526443032623`)
     url.month3.push(`http://fund.eastmoney.com/data/rankhandler.aspx?op=ph&dt=kf&ft=gp&rs=&gs=0&sc=3yzf&st=desc&sd=2018-03-08&ed=2019-03-08&qdii=&tabSubtype=,,,,,&pi=${i}&pn=50&dx=1&v=0.8709048966771133`)
-    url.month1.push(`http://fund.eastmoney.com/data/rankhandler.aspx?op=ph&dt=kf&ft=gp&rs=&gs=0&sc=1yzf&st=desc&sd=2018-03-08&ed=2019-03-08&qdii=&tabSubtype=,,,,,&pi=${i}&pn=50&dx=1&v=0.8329699048199899`)
+    // url.month1.push(`http://fund.eastmoney.com/data/rankhandler.aspx?op=ph&dt=kf&ft=gp&rs=&gs=0&sc=1yzf&st=desc&sd=2018-03-08&ed=2019-03-08&qdii=&tabSubtype=,,,,,&pi=${i}&pn=50&dx=1&v=0.8329699048199899`)
+
+    // 指数型
+    // url.year3.push(`http://fund.eastmoney.com/data/rankhandler.aspx?op=ph&dt=kf&ft=zs&rs=&gs=0&sc=3nzf&st=desc&sd=2019-07-16&ed=2020-07-16&qdii=|&tabSubtype=,,,,,&pi=${i}&pn=50&dx=1&v=0.7228072430938599`);
+    // url.year2.push(`http://fund.eastmoney.com/data/rankhandler.aspx?op=ph&dt=kf&ft=zs&rs=&gs=0&sc=2nzf&st=desc&sd=2019-07-16&ed=2020-07-16&qdii=|&tabSubtype=,,,,,&pi=${i}&pn=50&dx=1&v=0.9851648858549926`);
+    // url.year1.push(`http://fund.eastmoney.com/data/rankhandler.aspx?op=ph&dt=kf&ft=zs&rs=&gs=0&sc=1nzf&st=desc&sd=2019-07-16&ed=2020-07-16&qdii=|&tabSubtype=,,,,,&pi=${i}&pn=50&dx=1&v=0.08407942239905108`);
+    // url.month6.push(`http://fund.eastmoney.com/data/rankhandler.aspx?op=ph&dt=kf&ft=zs&rs=&gs=0&sc=6yzf&st=desc&sd=2019-07-16&ed=2020-07-16&qdii=|&tabSubtype=,,,,,&pi=${i}&pn=50&dx=1&v=0.049594508963676454`)
+    // url.month3.push(`http://fund.eastmoney.com/data/rankhandler.aspx?op=ph&dt=kf&ft=gp&rs=&gs=0&sc=3yzf&st=desc&sd=2018-03-08&ed=2019-03-08&qdii=&tabSubtype=,,,,,&pi=${i}&pn=50&dx=1&v=0.8709048966771133`)
+    // url.month1.push(`http://fund.eastmoney.com/data/rankhandler.aspx?op=ph&dt=kf&ft=gp&rs=&gs=0&sc=1yzf&st=desc&sd=2018-03-08&ed=2019-03-08&qdii=&tabSubtype=,,,,,&pi=${i}&pn=50&dx=1&v=0.8329699048199899`)
 }
 
 function start () {
@@ -92,40 +101,58 @@ function start () {
             res.write(JSON.stringify(money));
         });
         url.year3.forEach(url => {
-            superagent.get(url).end((err, pres) => {
-                concatResult(pres.text, 'year3');
-                ep.emit('fund');
-            })
+            superagent
+                .get(url)
+                .set('Referer', 'http://fund.eastmoney.com/data/fundranking.html')
+                .end((err, pres) => {
+                    concatResult(pres.text, 'year3');
+                    ep.emit('fund');
+                })
         })
         url.year2.forEach(url => {
-            superagent.get(url).end((err, pres) => {
-                concatResult(pres.text, 'year2');
-                ep.emit('fund');
-            })
+            superagent
+                .get(url)
+                .set('Referer', 'http://fund.eastmoney.com/data/fundranking.html')
+                .end((err, pres) => {
+                    concatResult(pres.text, 'year2');
+                    ep.emit('fund');
+                })
         })
         url.year1.forEach(url => {
-            superagent.get(url).end((err, pres) => {
-                concatResult(pres.text, 'year1');
-                ep.emit('fund');
-            })
+            superagent
+                .get(url)
+                .set('Referer', 'http://fund.eastmoney.com/data/fundranking.html')
+                .end((err, pres) => {
+                    concatResult(pres.text, 'year1');
+                    ep.emit('fund');
+                })
         })
         url.month6.forEach(url => {
-            superagent.get(url).end((err, pres) => {
-                concatResult(pres.text, 'month6');
-                ep.emit('fund');
-            })
+            superagent
+                .get(url)
+                .set('Referer', 'http://fund.eastmoney.com/data/fundranking.html')
+                .end((err, pres) => {
+                    concatResult(pres.text, 'month6');
+                    ep.emit('fund');
+                })
         })
         url.month3.forEach(url => {
-            superagent.get(url).end((err, pres) => {
-                concatResult(pres.text, 'month3');
-                ep.emit('fund');
-            })
+            superagent
+                .get(url)
+                .set('Referer', 'http://fund.eastmoney.com/data/fundranking.html')
+                .end((err, pres) => {
+                    concatResult(pres.text, 'month3');
+                    ep.emit('fund');
+                })
         })
         url.month1.forEach(url => {
-            superagent.get(url).end((err, pres) => {
-                concatResult(pres.text, 'month1');
-                ep.emit('fund');
-            })
+            superagent
+                .get(url)
+                .set('Referer', 'http://fund.eastmoney.com/data/fundranking.html')
+                .end((err, pres) => {
+                    concatResult(pres.text, 'month1');
+                    ep.emit('fund');
+                })
         })
     };
     http.createServer(onRequest).listen(8888);
